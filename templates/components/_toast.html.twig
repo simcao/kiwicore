@@ -1,0 +1,19 @@
+{% for message in app.flashes('success') %}
+
+    <div class="toast toast-success">
+        <span class="toast-close">&times;</span>
+        <h4 class="toast-title">Succès</h4>
+        <p class="toast-content">{{ message }}</p>
+    </div>
+
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+
+    <div class="toast toast-error">
+        <span class="toast-close">&times;</span>
+        <h4 class="toast-title">Erreur</h4>
+        <p class="toast-content">{{ message }}</p>
+    </div>
+
+{% endfor %}

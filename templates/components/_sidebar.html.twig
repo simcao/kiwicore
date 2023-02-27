@@ -1,0 +1,7 @@
+<aside>
+    <div class="menu">
+        <a href="{{ path('kiwicore_home') }}" class="menu-item {% if (app.request.pathInfo starts with path('kiwicore_home')) %} active {% endif %}">Tableau de bord</a>
+        <a href="{{ path('kiwicore_customer') }}" class="menu-item {% if (app.request.pathInfo starts with path('kiwicore_customer')) %} active {% endif %}">Clients</a>
+        <a href="#" class="menu-item">Factures</a>
+    </div>
+</aside>

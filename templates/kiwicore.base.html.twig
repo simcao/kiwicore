@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Accueil - Administration{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    </head>
+    <body>
+
+    {% include 'components/_navbar.html.twig' %}
+    {% include 'components/_sidebar.html.twig' %}
+
+    <main>
+        <div class="breadcrumb">
+            <ul>
+                {% block breadcrumbs %}<li>Accueil</li>{% endblock %}
+            </ul>
+        </div>
+        {% block page_title %}<h1>Tableau de bord</h1>{% endblock %}
+        {% block body %}{% endblock %}
+    </main>
+
+    {% include 'components/_toast.html.twig' %}
+
+    <script src="{{ asset('js/main.js') }}"></script>
+    </body>
+</html>

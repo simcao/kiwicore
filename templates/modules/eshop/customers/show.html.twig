@@ -1,0 +1,83 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Clients - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des clients</li>
+    <li>détails du client</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>Détails du client : {{ customer.name }}</h1>
+{% endblock %}
+
+{% block body %}
+    {% if customer.company %}
+        <div class="full-width text-right">
+            <a href="{{ path('kiwicore_customer_contact_create', {id: customer.id}) }}" class="btn btn-primary">ajouter un contact</a>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="col-2">
+            <div class="card">
+                <div class="card-title">
+                    Fiche client
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% if customer.company %}
+                        Raison sociale : {{ customer.name }}
+                        {% else %}
+                        Nom : {{ customer.name }}
+                        {% endif %}
+                    </p>
+                    <p>Adresse : {{ customer.address }}</p>
+                    <p>Ville : {{ customer.city }}</p>
+                    <p>Code postal : {{ customer.zipcode }}</p>
+                    <p>Email : {{ customer.email }}</p>
+                    <p>Téléphone : {{ customer.phone }}</p>
+                    <div class="text-right">
+                        <a href="{{ path('kiwicore_customer_edit', {'id': customer.id}) }}" class="btn btn-primary">modifier</a>
+                        <a href="#" id="confirmationModalTrigger" class="btn btn-primary">supprimer</a>
+                        <div class="modal" id="confirmationModal" data-confirmedPath="{{ path('kiwicore_customer_delete', {id: customer.id}) }}">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <p>Voulez-vous vraiment supprimer ce client ? Attention, cette opération entrainera la suppression de toutes les informations liées à ce client.</p>
+                                <a href="#" class="btn btn-success">Confirmer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">
+                    Factures associées
+                </div>
+            </div>
+        </div>
+
+        {% if customer.customerContacts|length > 0 %}
+            <div class="col-4">
+            {% for customerContact in customer.customerContacts %}
+                <div class="card">
+                    <div class="card-title">{{ customerContact.firstname ~ ' ' ~ customerContact.lastname }}</div>
+                    <div class="card-subtitle">contact</div>
+                    <div class="card-body">
+                        <ul>
+                            <li>Email : {{ customerContact.email }}</li>
+                            <li>Téléphone : {{ customerContact.phone }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-left">
+                            <a href="{{ path('kiwicore_customer_contact_edit', {'id': customerContact.id}) }}" class="btn btn-primary btn-small">modifier</a>
+                            <a href="{{ path('kiwicore_customer_contact_delete', {'customerId': customer.id, 'id': customerContact.id}) }}" class="btn btn-primary btn-small">supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

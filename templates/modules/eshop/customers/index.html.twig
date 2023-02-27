@@ -1,0 +1,69 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Clients - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des clients</li>
+    <li>Liste des clients</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>liste des clients enregistrés</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="full-width text-right">
+        <a href="{{ path('kiwicore_customer_create') }}" class="btn btn-primary">ajouter un client</a>
+    </div>
+    <div class="container">
+        {% if customers|length == 0 %}
+            <div class="col-1">
+                <div class="card">
+                    <div class="card-title">
+                        Aucun client enregistré.
+                    </div>
+                    <div class="card-body">
+                        Vous n'avez pas encore enregistré de client. Cliquez sur le bouton "ajouter un client" pour commencer à en créer.
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-4">
+                {% for customer in customers %}
+                    <div class="card animated-card">
+                        <div class="card-title">
+                            <a href="{{ path('kiwicore_customer_show', {'id': customer.id}) }}">{{ customer.name }}</a>
+                        </div>
+                        <div class="card-subtitle">
+                            {% if customer.company %}
+                                client entreprise
+                            {% else %}
+                                client particulier
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>{{ customer.customerContacts|length }} Contacts | 4 Factures</li>
+                                <li class="text-capitalize">{{ customer.address ~ ', ' ~ customer.zipcode ~ ' ' ~ customer.city }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-1">
+                <div class="pagination">
+                    {% if (currentPage > 1) and (currentPage <= maxPage) %}
+                        <a href="{{ path('kiwicore_customer', {currentPage: currentPage - 1}) }}">Page précédente</a>
+                    {% endif%}
+                    {% if maxPage > 2 and currentPage > 1 %}
+                    |
+                    {% endif %}
+                    {% if currentPage < maxPage %}
+                        <a href="{{ path('kiwicore_customer', {currentPage: currentPage + 1}) }}">Page suivante</a>
+                    {% endif%}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
