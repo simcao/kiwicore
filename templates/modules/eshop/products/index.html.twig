@@ -1,0 +1,67 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Produits - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des produits</li>
+    <li>Liste des produits</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>liste des produits enregistrés</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="full-width text-right">
+        <a href="{{ path('kiwicore_product_create') }}" class="btn btn-primary">ajouter un produit</a>
+    </div>
+    <div class="container">
+        {% if products|length == 0 %}
+            <div class="col-1">
+                <div class="card">
+                    <div class="card-title">
+                        Aucun produit enregistré.
+                    </div>
+                    <div class="card-body">
+                        Vous n'avez pas encore enregistré de produit. Cliquez sur le bouton "ajouter un produit" pour commencer à en créer.
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-4">
+                {% for product in products %}
+                    <div class="card-image animated-card">
+                        {% if product.productImages|length == 0 %}
+                            <div class="image-top" style="background-image: none"></div>
+                        {% else %}
+                            <div class="image-top" style="background-image: url({{ asset('uploads/' ~ product.productImages[0].file) }}"></div>
+                        {% endif %}
+                        <div class="card-title">
+                            <a href="{{ path('kiwicore_product_show', {'id': product.id}) }}">{{ product.name }}</a>
+                        </div>
+                        <div class="card-body">
+                            <span class="label label-primary">XX en stock</span>
+                            <span class="label">{{ product.price }} EUR</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="col-1">
+            <div class="pagination">
+                {% if (currentPage > 1) and (currentPage <= maxPage) %}
+                    <a href="{{ path('kiwicore_product', {currentPage: currentPage - 1}) }}">Page précédente</a>
+                {% endif%}
+                {% if maxPage > 2 and currentPage > 1 %}
+                    |
+                {% endif %}
+                {% if currentPage < maxPage %}
+                    <a href="{{ path('kiwicore_product', {currentPage: currentPage + 1}) }}">Page suivante</a>
+                {% endif%}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

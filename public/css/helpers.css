@@ -25,3 +25,10 @@
 .text-capitalize {
     text-transform: capitalize;
 }
+
+.margin-top-small {
+    margin-top: var(--space-small);
+}
+.margin-top-normal {
+    margin-top: var(--space-normal);
+}

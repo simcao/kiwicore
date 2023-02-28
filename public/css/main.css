@@ -22,6 +22,7 @@
     --color-error: #F03A47;
     --page-margin: 40px;
     --box-radius: 3px;
+    --space-small: 20px;
     --space-normal: 50px;
 }
 html, body {
@@ -49,6 +50,7 @@ ul, li {
     border-radius: 3px;
     text-transform: uppercase;
     font-weight: 500;
+    display: inline-block;
 }
 .btn-small {
     font-size: 8px;
@@ -62,10 +64,28 @@ ul, li {
     background-color: var(--color-succes);
     color: white;
 }
+.label {
+    background-color: var(--color-background);
+    padding: 3px 12px 3px 12px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-right: 5px;
+    transition: box-shadow .4s;
+    font-size: 12px;
+    display: inline-block;
+}
+.label:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+}
+.label-primary {
+    background-color: var(--color-primary);
+}
 form {
     max-width: inherit;
 }
-form input {
+form input, form textarea {
     display: block;
     width: 100%;
     background-color: transparent;
@@ -78,12 +98,17 @@ form input {
     transition: box-shadow .5s;
     margin-top: 5px;
     box-sizing: border-box;
+    resize: none;
 }
-form input:focus {
+form textarea {
+    line-height: 14px;
+}
+form input:focus, form textarea:focus {
     outline: none;
     box-shadow: 0 0 1px 1px var(--color-primary);
 }
 form select {
+    color: white;
     background-color: transparent;
     border: thin solid var(--color-background);
     border-radius: 7px;
@@ -354,6 +379,35 @@ main h1 {
     font-size: 12px;
     font-weight: 400;
 }
+.card-image {
+    width: 100%;
+    height: inherit;
+    padding: 0;
+    background-color: var(--color-card);
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.6);
+    margin-top: var(--space-normal);
+}
+.card-image .image-top {
+    height: 150px;
+    border-radius: 5px 5px 0 0;
+    background-size: cover;
+    background-position-y: center;
+}
+.card-image .card-title {
+    padding: 15px 10px 15px 10px;
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+    text-transform: capitalize;
+}
+.card-image .card-body {
+    margin-top: 10px;
+    padding: 0 10px 10px 10px;
+    font-size: 12px;
+    color: white;
+    font-weight: 400;
+}
 .pagination {
     text-align: left;
     text-transform: uppercase;
@@ -415,4 +469,45 @@ main h1 {
 .toast-error {
     background-color: var(--color-error);
     color: white;
+}
+.image-slider {
+    position: relative;
+    width: 100%;
+}
+.image-slider img {
+    position: absolute;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 7px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
+}
+.image-slider img:first-child {
+    opacity: 1;
+}
+.image-slider .prev,
+.image-slider .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.image-slider .prev:hover,
+.image-slider .next:hover {
+    color: #ccc;
+}
+.image-slider .prev {
+    left: 10px;
+}
+.image-slider .next {
+    right: 10px;
 }

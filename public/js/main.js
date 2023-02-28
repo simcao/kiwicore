@@ -59,3 +59,46 @@ if (toast != null && toastCloseButton != null) {
         toast.style.display = "none";
     }
 }
+
+/**
+ * Photo slider
+ */
+
+function slider() {
+    const images = document.querySelectorAll('.image-slider img');
+    const prevButton = document.querySelector('.image-slider .prev');
+    const nextButton = document.querySelector('.image-slider .next');
+    const intervalTime = 5000;
+    let index = 0;
+
+    function changeImage() {
+        const currentImage = images[index];
+        currentImage.style.opacity = 0;
+        index = (index + 1) % images.length;
+        const nextImage = images[index];
+        nextImage.style.opacity = 1;
+    }
+
+    function previousImage() {
+        const currentImage = images[index];
+        currentImage.style.opacity = 0;
+        index = (index - 1 + images.length) % images.length;
+        const previousImage = images[index];
+        previousImage.style.opacity = 1;
+    }
+
+    function nextImage() {
+        const currentImage = images[index];
+        currentImage.style.opacity = 0;
+        index = (index + 1) % images.length;
+        const nextImage = images[index];
+        nextImage.style.opacity = 1;
+    }
+
+    prevButton.addEventListener('click', previousImage);
+    nextButton.addEventListener('click', nextImage);
+
+    setInterval(changeImage, intervalTime);
+}
+slider();
+

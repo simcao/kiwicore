@@ -1,0 +1,76 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Produits - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des produits</li>
+    <li>détails du produit</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>Détails du produit : {{ product.name }}</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-3">
+
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        Informations sur le produit
+                    </div>
+                    <div class="card-body">
+                        <span class="label label-primary">XX en stock</span>
+                        <span class="label">{{ product.price }} EUR</span>
+                        <p class="margin-top-small">Dénomination : {{ product.name }}</p>
+                        <p>Description : {{ product.description }}</p>
+                        <p>Référence : {{ product.reference }}</p>
+                    </div>
+                </div>
+                <div class="margin-top-small">
+                    <a href="{{ path('kiwicore_product_edit', {'id': product.id}) }}" class="btn btn-primary">modifier ce produit</a>
+                    <a href="{{ path('kiwicore_product_delete', {'id': product.id}) }}" class="btn btn-primary">supprimer ce produit</a>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        Illustrations du produit
+                    </div>
+                    <div class="card-body">
+                        {% if product.productImages|length == 0 %}
+                            Aucune image enregistrée pour ce produit.
+                        {% else %}
+                            {% for image in product.productImages %}
+                                <p>
+                                    {{ image.file }}
+                                    <br>
+                                    <a href="{{ path('kiwicore_product_image_delete', {'id': image.id}) }}" class="btn btn-small btn-primary">supprimer</a>
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="margin-top-small">
+                    <a href="{{ path('kiwicore_product_image_create', {'id': product.id}) }}" class="btn btn-primary">ajouter une illustration</a>
+                </div>
+            </div>
+
+            {% if product.productImages|length > 0 %}
+                <div class="image-slider margin-top-normal">
+                    {% for image in product.productImages %}
+                        <img src="{{ asset('uploads/' ~ image.file)  }}" alt="{{ image.file }}">
+                    {% endfor %}
+                    {% if product.productImages|length > 1 %}
+                        <button class="prev">&#10094;</button>
+                        <button class="next">&#10095;</button>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

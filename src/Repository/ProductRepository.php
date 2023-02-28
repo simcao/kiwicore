@@ -1,5 +1,4 @@
 <?php
-
 /*
  *
  * This file is part of the Kiwicore package.
@@ -18,20 +17,20 @@
 
 namespace App\Repository;
 
-use App\Entity\Customer;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Customer>
+ * @extends ServiceEntityRepository<Product>
  *
- * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
- * @method Customer|null findOneBy(array $criteria, array $orderBy = null)
- * @method Customer[]    findAll()
- * @method Customer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Product|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Product|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Product[]    findAll()
+ * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CustomerRepository extends ServiceEntityRepository
+class ProductRepository extends ServiceEntityRepository
 {
     /**
      * Constructor.
@@ -40,17 +39,17 @@ class CustomerRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Customer::class);
+        parent::__construct($registry, Product::class);
     }
 
     /**
-     * Save a customer.
+     * Save a product.
      *
-     * @param Customer $entity
+     * @param Product $entity
      * @param bool $flush
      * @return void
      */
-    public function save(Customer $entity, bool $flush = false): void
+    public function save(Product $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -60,13 +59,13 @@ class CustomerRepository extends ServiceEntityRepository
     }
 
     /**
-     * Remove a customer.
+     * Remove a product.
      *
-     * @param Customer $entity
+     * @param Product $entity
      * @param bool $flush
      * @return void
      */
-    public function remove(Customer $entity, bool $flush = false): void
+    public function remove(Product $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -82,8 +81,8 @@ class CustomerRepository extends ServiceEntityRepository
      */
     public function findAllByName(): array
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC')
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -95,9 +94,9 @@ class CustomerRepository extends ServiceEntityRepository
      * @param int $pageSize
      * @return Paginator
      */
-    public function findAllByNamePaginated(int $currentPage = 1, int $pageSize = 12): Paginator
+    public function findAllByNamePaginated(int $currentPage = 1, int $pageSize = 16): Paginator
     {
-        $dql = "SELECT c, cc FROM App\Entity\Customer c LEFT JOIN c.customerContacts cc ORDER BY c.name ASC";
+        $dql = "SELECT p FROM App\Entity\Product p ORDER BY p.name ASC";
         $query = $this->getEntityManager()->createQuery($dql)
             ->setFirstResult(($currentPage - 1) * $pageSize)
             ->setMaxResults($pageSize);
@@ -110,24 +109,24 @@ class CustomerRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Customer[] Returns an array of Customer objects
+//     * @return Product[] Returns an array of Product objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
+//            ->orderBy('p.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Customer
+//    public function findOneBySomeField($value): ?Product
 //    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

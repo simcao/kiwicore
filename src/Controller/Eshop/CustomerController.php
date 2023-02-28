@@ -39,7 +39,6 @@ class CustomerController extends AbstractController
     #[Route('/admin/clients/liste/{currentPage}', name: 'kiwicore_customer')]
     public function listCustomers(ManagerRegistry $doctrine, int $currentPage = 1): Response
     {
-        //$customers = $doctrine->getRepository(Customer::class)->findAllByName();
         $customers = $doctrine->getRepository(Customer::class)->findAllByNamePaginated($currentPage);
 
         return $this->render('modules/eshop/customers/index.html.twig', [
@@ -106,7 +105,7 @@ class CustomerController extends AbstractController
     {
         $customer = $doctrine->getRepository(Customer::class)->find($id);
 
-        if ($customer === null)
+        if (!$customer)
         {
             $this->addFlash('error', 'Une erreur est survenue : impossible de trouver ce client.');
             return $this->redirectToRoute('kiwicore_customer');
