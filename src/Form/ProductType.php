@@ -14,6 +14,8 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use App\Entity\ProductCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -31,6 +33,13 @@ class ProductType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom du produit',
                 'required' => true,
+            ])
+            ->add('category', EntityType::class, [
+                'class' => ProductCategory::class,
+                'choice_label' => 'name',
+                'label' => 'Catégorie de produit',
+                'placeholder' => 'Veuillez choisir une catégorie',
+                'required' => false
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description du produit',

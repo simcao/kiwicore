@@ -20,6 +20,7 @@ use App\Form\ProductType;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,12 +82,16 @@ class ProductController extends AbstractController
         return $this->render('forms/form.html.twig', [
             'page_breadcrumbs' => "<li>accueil</li><li>gestion des produits</li><li>ajouter un produit</li>",
             'page_title' => 'Formulaire de gestion produit',
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
-    /*
+    /**
      * Return page with details of product. Redirect to product list if not found.
+     *
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
      */
     #[Route('/admin/produits/{id}', name: 'kiwicore_product_show')]
     public function showProduct(ManagerRegistry $doctrine, int $id): Response
@@ -170,6 +175,8 @@ class ProductController extends AbstractController
     }
 
     /**
+     * Return page with form to add a new image to product.
+     *
      * @param ManagerRegistry $doctrine
      * @param Request $request
      * @param FileUploader $fileUploader
@@ -199,8 +206,17 @@ class ProductController extends AbstractController
             $uploaded_file = $form->get('file')->getData();
             if ($uploaded_file)
             {
-                $uploaded_file_name = $fileUploader->upload($uploaded_file, $this->getParameter('kernel.project_dir') . '/public/uploads/');
-                $imageResizer->resize($this->getParameter('kernel.project_dir') . '/public/uploads/' . $uploaded_file_name);
+                try
+                {
+                    $uploaded_file_name = $fileUploader->upload($uploaded_file, $this->getParameter('kernel.project_dir') . '/public/uploads/');
+                    $imageResizer->resize($this->getParameter('kernel.project_dir') . '/public/uploads/' . $uploaded_file_name);
+                }
+                catch (Exception $exception)
+                {
+                    $this->addFlash('error', "Une erreur est survenue lors du chargement du fichier : " . $exception->getMessage());
+                    return  $this->redirectToRoute('kiwicore_product_show', ['id' => $product->getId()]);
+                }
+
                 $productImage->setFile($uploaded_file_name);
                 $productImage->setProduct($product);
 
@@ -221,6 +237,13 @@ class ProductController extends AbstractController
         ]);
     }
 
+    /**
+     * Route to delete a product image. Redirect to product list if not found.
+     *
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/produits/supprimer-une-image/{id}', name: 'kiwicore_product_image_delete')]
     public function deleteProductImage(ManagerRegistry $doctrine, int $id): Response
     {

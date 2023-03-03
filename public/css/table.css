@@ -1,0 +1,47 @@
+/*
+ *
+ * This file is part of the Kiwicore package.
+ *
+ * (c) Simcao EI <dev@simcao.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ *  2023
+ */
+
+table, td, tr, th {
+    padding: 0;
+    margin: 0;
+    border-collapse: collapse;
+}
+.basic-table {
+    --tr-height: 32px;
+    width: 100%;
+}
+.basic-table thead {
+    background-color: var(--color-primary);
+    line-height: var(--tr-height);
+    text-align: left;
+    text-transform: uppercase;
+}
+.basic-table th {
+    padding-left: 10px;
+}
+.basic-table th:nth-child(1) {
+    border-radius: 5px 0 0 5px;
+}
+
+.basic-table th:nth-last-child(1) {
+    border-radius: 0 5px 5px 0;
+}
+.basic-table tbody tr {
+    line-height: var(--tr-height);
+    transition: background-color .3s;
+}
+.basic-table tbody tr:hover {
+    background-color: var(--color-background);
+}
+.basic-table tbody td {
+    padding-left: 10px;
+}

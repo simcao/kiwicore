@@ -72,6 +72,9 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, orphanRemoval: true)]
     private Collection $productImages;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?ProductCategory $category = null;
+
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
@@ -109,6 +112,11 @@ class Product
     public function getPrice(): ?int
     {
         return $this->price;
+    }
+
+    public function getFormattedPrice(): ?string
+    {
+        return number_format($this->price / 100, 2, ',', ' ');
     }
 
     public function setPrice(int $price): self
@@ -168,6 +176,18 @@ class Product
                 $productImage->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?ProductCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?ProductCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

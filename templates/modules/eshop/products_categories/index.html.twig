@@ -1,0 +1,54 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Produits - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des produits</li>
+    <li>Catégories de produits</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>liste des catégories enregistrés</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="full-width text-right">
+        <a href="{{ path('kiwicore_product_category_create') }}" class="btn btn-primary">ajouter une catégorie</a>
+    </div>
+
+    <div class="container">
+        <div class="col-1">
+            <div class="card">
+                <div class="card-title">
+                    Détails des catégories de produit
+                </div>
+                <div class="card-body">
+
+                    <table class="basic-table">
+                        <thead>
+                            <th>#</th>
+                            <th>Nom de la catégorie</th>
+                            <th>Nombre de produits associés</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                                <tr>
+                                    <td>{{ category.id }}</td>
+                                    <td>{{ category.name }}</td>
+                                    <td>{{ category.products|length }}</td>
+                                    <td>
+                                        <a href="{{ path('kiwicore_product_category_edit', {'id': category.id}) }}" class="btn btn-primary btn-small">modifier</a>
+                                        <a href="{{ path('kiwicore_product_category_delete', {'id': category.id}) }}" class="btn btn-primary btn-small">supprimer</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

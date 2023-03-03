@@ -24,6 +24,8 @@ document.getElementById("toogle-menu").onclick = function(e){
 /**
  * Modal confirmation
  *
+ * https://jsfiddle.net/ojvf4uac/
+ *
  * @type {HTMLElement}
  */
 const confirmationModal = document.getElementById("confirmationModal");
@@ -47,7 +49,7 @@ if(confirmationModalTrigger != null)
 }
 
 /**
- * Close modal button
+ * Close toast button
  *
  * @type {Element}
  */
