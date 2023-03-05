@@ -48,10 +48,17 @@ class ImageResizer
      *
      * @param string $filename
      * @return void
+     * @throws \Exception
      */
     public function resize(string $filename): void
     {
         list($iwidth, $iheight) = getimagesize($filename);
+
+        if (!$iheight > 0)
+        {
+            throw new \Exception('Le document a une taille égale à 0');
+        }
+
         $ratio = $iwidth / $iheight;
         $width = self::MAX_WIDTH;
         $height = self::MAX_HEIGHT;

@@ -1,0 +1,78 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Produits - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des stocks</li>
+    <li>Détails du stock</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>détails du stock : {{ product.name }}</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="full-width text-right">
+        <a href="{{ path('kiwicore_stock_edit', {'id': product.id}) }}" class="btn btn-primary">mettre à jour le stock</a>
+    </div>
+    <div class="container">
+        <div class="col-2">
+            <div>
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">
+                            <h1>{{ product.stock }} en stock</h1>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">
+                            <h1>{{ product.stock * product.price / 100 }} EUR valorisation</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        Historique des opérations
+                    </div>
+                    <div class="card-body">
+                        <table class="basic-table">
+                            <thead>
+                            <th>Date</th>
+                            <th>Libellé de l'opération</th>
+                            <th>Quantité</th>
+                            </thead>
+                            <tbody>
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.transactionDate | date('d/m/Y') }}</td>
+                                    <td>{{ transaction.label }}</td>
+                                    <td>{{ transaction.quantity }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        Transactions mensuelles
+                    </div>
+                    <div class="card-subtitle">
+                        Année {{ date('Y')|date('Y') }}
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            {{ chart | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

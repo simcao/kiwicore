@@ -42,9 +42,21 @@
                         </div>
                         <div class="card-body">
                             {% if product.isStockable %}
-                                <span class="label label-primary">XX en stock</span>
+                                <span class="label label-primary">
+                                    {% if product.stock == null %}
+                                        0
+                                    {% else %}
+                                        {{ product.stock }}
+                                    {% endif %}
+                                    en stock
+                                </span>
                             {% endif %}
                             <span class="label">{{ product.formattedPrice }} EUR</span>
+                        </div>
+                        <div class="card-subtitle">
+                            {% if product.category.name is defined %}
+                                {{ product.category.name }}
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

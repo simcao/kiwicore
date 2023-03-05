@@ -1,0 +1,67 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Produits - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des stocks</li>
+    <li>Liste des stocks</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>liste des stocks</h1>
+{% endblock %}
+
+{% block body %}
+<div class="full-width text-right">
+    <a href="{{ path('kiwicore_product_create') }}" class="btn btn-primary">ajouter un produit</a>
+</div>
+<div class="container">
+    <div class="col-1">
+        <div>
+            <<div class="card">
+                <div class="card-title">
+                    Stocks en cours
+                </div>
+                <div class="card-body">
+                    <table class="basic-table">
+                        <thead>
+                        <th>Produit</th>
+                        <th>Quantité en stock</th>
+                        <th>Valorisation</th>
+                        <th>Action</th>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td><a href="{{ path('kiwicore_product_show', {'id': product.id}) }}">{{ product.name }}</a></td>
+                                <td>{{ product.stock }}</td>
+                                <td>{{ product.stock * product.price / 100 }} EUR</td>
+                                <td>
+                                    <a href="{{ path('kiwicore_stock_edit', {'id': product.id}) }}" class="btn btn-primary btn-small">mettre à jour</a>
+                                    <a href="{{ path('kiwicore_stock_show', {'id': product.id}) }}" class="btn btn-primary btn-small">détails</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="pagination">
+                {% if (currentPage > 1) and (currentPage <= maxPage) %}
+                    <a href="{{ path('kiwicore_stock', {currentPage: currentPage - 1}) }}">Page précédente</a>
+                {% endif%}
+                {% if maxPage > 2 and currentPage > 1 %}
+                    |
+                {% endif %}
+                {% if currentPage < maxPage %}
+                    <a href="{{ path('kiwicore_stock', {currentPage: currentPage + 1}) }}">Page suivante</a>
+                {% endif%}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -17,6 +17,7 @@ use App\Repository\ProductCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
 class ProductCategory
@@ -26,6 +27,13 @@ class ProductCategory
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le nom de la catégorie est trop court',
+        maxMessage: 'Le nom de la catégorie est trop long. Limite : {{ limit }} characters',
+    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

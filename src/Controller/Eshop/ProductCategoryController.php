@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Manage product category related pages.
+ *
+ * @author Simcao
+ */
 class ProductCategoryController extends AbstractController
 {
     /**
@@ -32,6 +37,7 @@ class ProductCategoryController extends AbstractController
     #[Route('/admin/produits/categories', name: 'kiwicore_product_category')]
     public function listProductCategory(ManagerRegistry $doctrine): Response
     {
+
         $productCategories = $doctrine->getRepository(ProductCategory::class)->findAllByName();
 
         return $this->render('modules/eshop/products_categories/index.html.twig', [
@@ -129,6 +135,14 @@ class ProductCategoryController extends AbstractController
         if (!$productCategory) {
             $this->addFlash('error', 'Une erreur est survenue : impossible de trouver cette catégorie de produit.');
             return $this->redirectToRoute('kiwicore_product_category');
+        }
+
+        foreach ($productCategory->getProducts() as $product)
+        {
+            $product->setCategory(null);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
         }
 
         $doctrine->getRepository(ProductCategory::class)->remove($productCategory, true);

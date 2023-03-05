@@ -104,3 +104,6 @@ function slider() {
 }
 slider();
 
+/**
+ * Chart
+ */

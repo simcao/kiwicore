@@ -75,9 +75,16 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?ProductCategory $category = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $stock = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductStockTransaction::class, orphanRemoval: true)]
+    private Collection $stockTransactions;
+
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
+        $this->stockTransactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +195,48 @@ class Product
     public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductStockTransaction>
+     */
+    public function getStockTransactions(): Collection
+    {
+        return $this->stockTransactions;
+    }
+
+    public function addStockTransaction(ProductStockTransaction $stockTransaction): self
+    {
+        if (!$this->stockTransactions->contains($stockTransaction)) {
+            $this->stockTransactions->add($stockTransaction);
+            $stockTransaction->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockTransaction(ProductStockTransaction $stockTransaction): self
+    {
+        if ($this->stockTransactions->removeElement($stockTransaction)) {
+            // set the owning side to null (unless already changed)
+            if ($stockTransaction->getProduct() === $this) {
+                $stockTransaction->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -96,7 +96,21 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllByNamePaginated(int $currentPage = 1, int $pageSize = 16): Paginator
     {
-        $dql = "SELECT p, pi FROM App\Entity\Product p LEFT JOIN p.productImages pi ORDER BY p.name ASC";
+        $dql = "SELECT p, pi, pc FROM App\Entity\Product p LEFT JOIN p.productImages pi LEFT JOIN p.category pc ORDER BY p.name ASC";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setFirstResult(($currentPage - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+
+        $paginator = new Paginator($query);
+
+        $paginator->totalPages = ceil($paginator->count() / $pageSize);
+
+        return $paginator;
+    }
+
+    public function findAllByStockPaginated(int $currentPage = 1, int $pageSize = 30): Paginator
+    {
+        $dql = "SELECT p FROM App\Entity\Product p WHERE p.stockable = 1 ORDER BY p.stock ASC, p.name ASC";
         $query = $this->getEntityManager()->createQuery($dql)
             ->setFirstResult(($currentPage - 1) * $pageSize)
             ->setMaxResults($pageSize);

@@ -28,6 +28,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Manage product related pages.
+ *
+ * @author Simcao
  */
 class ProductController extends AbstractController
 {
