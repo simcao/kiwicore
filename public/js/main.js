@@ -11,6 +11,10 @@
  */
 
 /**
+ * Chart
+ */
+
+/**
  * User toogle menu
  *
  * @param e
@@ -97,13 +101,90 @@ function slider() {
         nextImage.style.opacity = 1;
     }
 
-    prevButton.addEventListener('click', previousImage);
-    nextButton.addEventListener('click', nextImage);
+    if (prevButton) {
+        prevButton.addEventListener('click', previousImage);
+        nextButton.addEventListener('click', nextImage);
+    }
 
     setInterval(changeImage, intervalTime);
 }
 slider();
 
 /**
- * Chart
+ * Charts
  */
+
+class ChartConfiguration
+{
+
+    constructor()
+    {
+        this.datasets = [];
+    }
+
+    setLabels(labels)
+    {
+        this.labels = labels;
+    }
+
+    addData(label, data)
+    {
+        let dataToAdd = {
+            label: label,
+            data: data,
+        };
+
+        this.datasets.push(dataToAdd);
+    }
+
+    setConfig()
+    {
+        this.config = {
+            type: 'bar',
+            data: {
+                labels: this.labels,
+                datasets: this.datasets
+            },
+            options: {}
+        }
+
+        return this.config;
+    }
+}
+
+const chartCanvases = document.getElementsByClassName('chart');
+let config = new ChartConfiguration();
+
+for (let i = 0; i < chartCanvases.length; i++)
+{
+
+    let chartCanvas = chartCanvases[i];
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', chartCanvas.getAttribute('data-url'), true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+
+            config.setLabels(data.labels);
+
+
+            for (let j = 0; j < data.datasets.length ; j++)
+            {
+                config.addData(data.datasets[j].label, data.datasets[j].data);
+            }
+
+            config.setConfig();
+
+            new Chart(chartCanvas, config.config);
+
+        }
+    };
+    xhr.send();
+
+}
+
+
+
+
+

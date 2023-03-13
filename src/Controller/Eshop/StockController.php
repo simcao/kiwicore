@@ -16,7 +16,6 @@ namespace App\Controller\Eshop;
 use App\Entity\Product;
 use App\Entity\ProductStockTransaction;
 use App\Form\ProductStockTransactionType;
-use App\Service\Chart;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,17 +103,11 @@ class StockController extends AbstractController
             return $this->redirectToRoute('kiwicore_stock');
         }
 
-        $chart = new Chart('bar');
-        $chart->setLabels(array_keys($doctrine->getRepository(ProductStockTransaction::class)->findPositiveTransactionGroupByMonthFormatted($product)));
-        $chart->addDataset('Entrée de stock', $doctrine->getRepository(ProductStockTransaction::class)->findPositiveTransactionGroupByMonthFormatted($product));
-        $chart->addDataset('Sortie de stock', $doctrine->getRepository(ProductStockTransaction::class)->findNegativeTransactionGroupByMonthFormatted($product));
-        $chart = $chart->getChart();
-
         return $this->render('modules/eshop/stocks/show.html.twig', [
             'product' => $product,
             'transactions' => $doctrine->getRepository(ProductStockTransaction::class)->findProductHistory($product),
-            'chart' => $chart,
         ]);
     }
+    
 }
 

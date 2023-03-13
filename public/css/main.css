@@ -523,9 +523,7 @@ main h1 {
 .image-slider .next {
     right: 10px;
 }
-canvas {
-    display: flex;
-    align-content: center;
-    justify-content: center;
+.chart-box {
     width: 100%;
+    max-height: 400px;
 }

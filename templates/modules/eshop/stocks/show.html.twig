@@ -65,9 +65,7 @@
                         Année {{ date('Y')|date('Y') }}
                     </div>
                     <div class="card-body">
-                        <div>
-                            {{ chart | raw }}
-                        </div>
+                        <canvas class="chart" data-url="{{ path('kiwicore_api_eshop_stocks_transactions', {id: product.id}) }}"></canvas>
                     </div>
                 </div>
             </div>
