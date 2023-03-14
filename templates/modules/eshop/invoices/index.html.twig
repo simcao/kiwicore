@@ -1,0 +1,69 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Factures - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des factures</li>
+    <li>Liste des factures</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>liste des factures enregistrées</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="full-width text-right">
+        <a href="{{ path('kiwicore_invoice_create') }}" class="btn btn-primary">ajouter une facture</a>
+    </div>
+    <div class="container">
+        <div class="col-1">
+            <div class="card">
+                <div class="card-title">
+                    Factures
+                </div>
+                <div class="card-body">
+                    <table class="basic-table">
+                        <thead>
+                            <th>Ref</th>
+                            <th>Client</th>
+                            <th>Montant</th>
+                            <th>Date de la facture</th>
+                            <th>Due le</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{ invoice.id }}</td>
+                                    <td>{{ invoice.customer.name }}</td>
+                                    <td>{{ invoice.total / 100 }} EUR</td>
+                                    <td>{{ invoice.dateBilling | date('d/m/Y') }}</td>
+                                    <td>{{ invoice.dateDue | date('d/m/Y') }}</td>
+                                    <td>Draft</td>
+                                    <td>
+                                        <a href="{{ path('kiwicore_invoice_show', {id: invoice.id}) }}">Modifier</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="pagination">
+                {% if (currentPage > 1) and (currentPage <= maxPage) %}
+                    <a href="{{ path('kiwicore_invoice', {currentPage: currentPage - 1}) }}">Page précédente</a>
+                {% endif%}
+                {% if maxPage > 2 and currentPage > 1 %}
+                    |
+                {% endif %}
+                {% if currentPage < maxPage %}
+                    <a href="{{ path('kiwicore_invoice', {currentPage: currentPage + 1}) }}">Page suivante</a>
+                {% endif%}
+            </div>
+        </div>
+    </div>
+{% endblock %}

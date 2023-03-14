@@ -13,6 +13,7 @@
 
 namespace App\Service;
 
+use Exception;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 
@@ -48,7 +49,7 @@ class ImageResizer
      *
      * @param string $filename
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function resize(string $filename): void
     {
@@ -56,7 +57,7 @@ class ImageResizer
 
         if (!$iheight > 0)
         {
-            throw new \Exception('Le document a une taille égale à 0');
+            throw new Exception('Le document a une taille égale à 0');
         }
 
         $ratio = $iwidth / $iheight;

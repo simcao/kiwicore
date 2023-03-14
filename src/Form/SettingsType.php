@@ -13,25 +13,24 @@
 
 namespace App\Form;
 
-use App\Entity\ProductImage;
+use App\Entity\Settings;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Simcao EI
+ * @author Simcao EI
  */
-class ProductImageType extends AbstractType
+class SettingsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file', FileType::class, [
-                'label' => 'Choisir une image à charger',
-                'help' => '.jpg, .jpeg, .png, .svg, .pdf'
-            ])
+            ->add('companyName')
+            ->add('companyAddress')
+            ->add('companyCity')
+            ->add('companyZipcode')
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer'
             ])
@@ -41,7 +40,7 @@ class ProductImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ProductImage::class,
+            'data_class' => Settings::class,
         ]);
     }
 }

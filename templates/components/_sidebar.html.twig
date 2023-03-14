@@ -5,6 +5,7 @@
         <a href="{{ path('kiwicore_product') }}" class="menu-item {% if (app.request.pathInfo starts with path('kiwicore_product')) %} active {% endif %}">Produits</a>
         <a href="{{ path('kiwicore_product_category') }}" class="menu-item">Catégories de produits</a>
         <a href="{{ path('kiwicore_stock') }}" class="menu-item">Gestion des stocks</a>
-        <a href="#" class="menu-item">Factures</a>
+        <a href="{{ path('kiwicore_invoice') }}" class="menu-item">Factures</a>
+        <a href="{{ path('kiwicore_settings') }}" class="menu-item">Configuration</a>
     </div>
 </aside>

@@ -14,6 +14,7 @@
 namespace App\Form;
 
 use App\Entity\ProductStockTransaction;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -22,6 +23,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Simcao EI
+ */
 class ProductStockTransactionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -29,7 +33,7 @@ class ProductStockTransactionType extends AbstractType
         $builder
             ->add('transactionDate', DateType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime(),
+                'data' => new DateTime(),
                 'label' => 'Date de la mise à jour'
             ])
             ->add('label', TextType::class, [

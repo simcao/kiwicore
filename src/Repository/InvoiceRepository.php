@@ -1,5 +1,4 @@
 <?php
-
 /*
  *
  * This file is part of the Kiwicore package.
@@ -18,22 +17,23 @@
 
 namespace App\Repository;
 
-use App\Entity\Customer;
+use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Customer>
+ * @extends ServiceEntityRepository<Invoice>
  *
- * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
- * @method Customer|null findOneBy(array $criteria, array $orderBy = null)
- * @method Customer[]    findAll()
- * @method Customer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Invoice|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Invoice|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Invoice[]    findAll()
+ * @method Invoice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @author Simcao EI
  */
-class CustomerRepository extends ServiceEntityRepository
+class InvoiceRepository extends ServiceEntityRepository
 {
     /**
      * Constructor.
@@ -42,17 +42,17 @@ class CustomerRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Customer::class);
+        parent::__construct($registry, Invoice::class);
     }
 
     /**
-     * Save a customer.
+     * Save a new invoice.
      *
-     * @param Customer $entity
+     * @param Invoice $entity
      * @param bool $flush
      * @return void
      */
-    public function save(Customer $entity, bool $flush = false): void
+    public function save(Invoice $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -62,13 +62,13 @@ class CustomerRepository extends ServiceEntityRepository
     }
 
     /**
-     * Remove a customer.
+     * Remove invoice.
      *
-     * @param Customer $entity
+     * @param Invoice $entity
      * @param bool $flush
      * @return void
      */
-    public function remove(Customer $entity, bool $flush = false): void
+    public function remove(Invoice $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -78,28 +78,15 @@ class CustomerRepository extends ServiceEntityRepository
     }
 
     /**
-     * Return array of all customers sorted by name
-     *
-     * @return array
-     */
-    public function findAllByName(): array
-    {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Return Paginator[] of all customers sorted by name and paginated
+     * Return Paginator[] of all invoices sorted by date and paginated
      *
      * @param int $currentPage
      * @param int $pageSize
      * @return Paginator
      */
-    public function findAllByNamePaginated(int $currentPage = 1, int $pageSize = 12): Paginator
+    public function findAllByDatePaginated(int $currentPage = 1, int $pageSize = 20): Paginator
     {
-        $dql = "SELECT c, cc FROM App\Entity\Customer c LEFT JOIN c.customerContacts cc ORDER BY c.name ASC";
+        $dql = "SELECT i, c FROM App\Entity\Invoice i LEFT JOIN i.customer c ORDER BY i.created_at DESC";
         $query = $this->getEntityManager()->createQuery($dql)
             ->setFirstResult(($currentPage - 1) * $pageSize)
             ->setMaxResults($pageSize);
@@ -110,4 +97,25 @@ class CustomerRepository extends ServiceEntityRepository
 
         return $paginator;
     }
+
+    /**
+     * Return details of selected invoice
+     *
+     * @param $invoice
+     * @return Invoice|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneWithDetails($invoice): ?Invoice
+    {
+        return $this->createQueryBuilder('i')
+            ->select('i')
+            ->where('i.id = :invoice')
+            ->leftJoin('i.items', 'l')
+            ->leftJoin('l.product', 'p')
+            ->setParameter('invoice', $invoice)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

@@ -30,6 +30,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ProductStockTransaction|null findOneBy(array $criteria, array $orderBy = null)
  * @method ProductStockTransaction[]    findAll()
  * @method ProductStockTransaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Simcao EI
  */
 class ProductStockTransactionRepository extends ServiceEntityRepository
 {

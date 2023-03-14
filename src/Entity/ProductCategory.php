@@ -11,6 +11,8 @@
  *  2023
  */
 
+/** @noinspection PhpUnused */
+
 namespace App\Entity;
 
 use App\Repository\ProductCategoryRepository;
@@ -19,6 +21,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Simcao EI
+ */
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
 class ProductCategory
 {

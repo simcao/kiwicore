@@ -17,40 +17,41 @@
 
 namespace App\Repository;
 
-use App\Entity\ProductCategory;
+use App\Entity\Settings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ProductCategory>
+ * @extends ServiceEntityRepository<Settings>
  *
- * @method ProductCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductCategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProductCategory[]    findAll()
- * @method ProductCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Settings|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Settings|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Settings[]    findAll()
+ * @method Settings[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @author Simcao EI
  */
-class ProductCategoryRepository extends ServiceEntityRepository
+class SettingsRepository extends ServiceEntityRepository
 {
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProductCategory::class);
+        parent::__construct($registry, Settings::class);
     }
 
     /**
-     * Save product category.
+     * Save configuration.
      *
-     * @param ProductCategory $entity
+     * @param Settings $entity
      * @param bool $flush
      * @return void
      */
-    public function save(ProductCategory $entity, bool $flush = false): void
+    public function save(Settings $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -60,13 +61,13 @@ class ProductCategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Remove product category
+     * Remove configuration.
      *
-     * @param ProductCategory $entity
+     * @param Settings $entity
      * @param bool $flush
      * @return void
      */
-    public function remove(ProductCategory $entity, bool $flush = false): void
+    public function remove(Settings $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -76,14 +77,17 @@ class ProductCategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Return array of all categories sorted by name
+     * Return current configuration.
      *
-     * @return array
+     * @return Settings|null
+     * @throws NonUniqueResultException
      */
-    public function findAllByName(): array
+    public function findCurrentSettings(): ?Settings
     {
-        return $this->getEntityManager()
-            ->createQuery('SELECT pc, p FROM App\Entity\ProductCategory pc LEFT JOIN pc.products p ORDER BY pc.name ASC')
-            ->getResult();
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  *
  * This file is part of the Kiwicore package.
@@ -11,6 +12,8 @@
  *  2023
  */
 
+/** @noinspection PhpUnused */
+
 namespace App\Entity;
 
 use App\Repository\CustomerRepository;
@@ -19,6 +22,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Simcao EI
+ */
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
 {
@@ -74,9 +80,13 @@ class Customer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerContact::class, orphanRemoval: true)]
     private Collection $customerContacts;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Invoice::class, orphanRemoval: true)]
+    private Collection $invoices;
+
     public function __construct()
     {
         $this->customerContacts = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +202,36 @@ class Customer
             // set the owning side to null (unless already changed)
             if ($customerContact->getCustomer() === $this) {
                 $customerContact->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getCustomer() === $this) {
+                $invoice->setCustomer(null);
             }
         }
 

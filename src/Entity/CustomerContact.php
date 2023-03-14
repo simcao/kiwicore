@@ -11,12 +11,17 @@
  *  2023
  */
 
+/** @noinspection PhpUnused */
+
 namespace App\Entity;
 
 use App\Repository\CustomerContactRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
+/*
+* @author Simcao EI
+*/
 #[ORM\Entity(repositoryClass: CustomerContactRepository::class)]
 class CustomerContact
 {

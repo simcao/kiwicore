@@ -1,0 +1,37 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Factures - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Configuration</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>Configuration</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-1">
+            <div class="card">
+                <div class="card-title">
+                    Configuration actuelle
+                </div>
+                <div class="card-body">
+                    {% if settings %}
+                        <a href="{{ path('kiwicore_settings_update') }}" class="btn-primary btn btn-small">Modifier</a>
+                        <ul>
+                            <li>Entreprise : {{ settings.companyName }}</li>
+                            <li>Adresse : {{ settings.companyAddress }}</li>
+                            <li>Ville : {{ settings.companyCity }}</li>
+                            <li>Code postal : {{ settings.companyZipcode }}</li>
+                        </ul>
+                    {% else %}
+                        Aucune configuration enregistrée. <a href="{{ path('kiwicore_settings_update') }}" class="btn-primary btn btn-small">Cliquez ici pour ajouter une nouvelle configuration</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

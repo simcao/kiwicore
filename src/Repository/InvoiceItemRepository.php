@@ -17,40 +17,40 @@
 
 namespace App\Repository;
 
-use App\Entity\ProductImage;
+use App\Entity\InvoiceItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ProductImage>
+ * @extends ServiceEntityRepository<InvoiceItem>
  *
- * @method ProductImage|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductImage|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProductImage[]    findAll()
- * @method ProductImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InvoiceItem|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InvoiceItem|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InvoiceItem[]    findAll()
+ * @method InvoiceItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @author Simcao EI
  */
-class ProductImageRepository extends ServiceEntityRepository
+class InvoiceItemRepository extends ServiceEntityRepository
 {
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProductImage::class);
+        parent::__construct($registry, InvoiceItem::class);
     }
 
     /**
-     * Save a product image.
+     * Save invoice item.
      *
-     * @param ProductImage $entity
+     * @param InvoiceItem $entity
      * @param bool $flush
      * @return void
      */
-    public function save(ProductImage $entity, bool $flush = false): void
+    public function save(InvoiceItem $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -60,13 +60,13 @@ class ProductImageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Remove a product image.
+     * Remove invoice item.
      *
-     * @param ProductImage $entity
+     * @param InvoiceItem $entity
      * @param bool $flush
      * @return void
      */
-    public function remove(ProductImage $entity, bool $flush = false): void
+    public function remove(InvoiceItem $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

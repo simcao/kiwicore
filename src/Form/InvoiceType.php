@@ -13,27 +13,38 @@
 
 namespace App\Form;
 
-use App\Entity\ProductCategory;
+use App\Entity\Customer;
+use App\Entity\Invoice;
+use DateTime;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Simcao EI
  */
-class ProductCategoryType extends AbstractType
+class InvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Nom de la catégorie de produit',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Ex : Pantalons / Alimentaire ...'
-                ]
+            ->add('customer', EntityType::class, [
+                'class' => Customer::class,
+                'choice_label' => 'name',
+                'label' => 'Client à facturer'
+            ])
+            ->add('dateBilling', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de facturation',
+                'data' => new DateTime()
+            ])
+            ->add('dateDue', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Echéance de la facture',
+                'data' => new DateTime('now + 30 days')
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer'
@@ -44,7 +55,7 @@ class ProductCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ProductCategory::class,
+            'data_class' => Invoice::class,
         ]);
     }
 }

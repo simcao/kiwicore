@@ -13,35 +13,42 @@
 
 namespace App\Form;
 
-use App\Entity\ProductImage;
+use App\Entity\InvoiceItem;
+use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Simcao EI
+ * @author Simcao EI
  */
-class ProductImageType extends AbstractType
+class InvoiceItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file', FileType::class, [
-                'label' => 'Choisir une image à charger',
-                'help' => '.jpg, .jpeg, .png, .svg, .pdf'
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'choice_label' => 'name',
+                'label' => 'Sélectionnez un produit à facturer'
+            ])
+            ->add('quantity', NumberType::class, [
+                'label' => 'Quantité à facturer'
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer'
             ])
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ProductImage::class,
+            'data_class' => InvoiceItem::class,
         ]);
     }
 }

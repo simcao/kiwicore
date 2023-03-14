@@ -62,6 +62,7 @@ const toastCloseButton = document.getElementsByClassName("toast-close")[0];
 
 if (toast != null && toastCloseButton != null) {
     toastCloseButton.onclick = function () {
+        // noinspection JSUnresolvedVariable
         toast.style.display = "none";
     }
 }
@@ -176,6 +177,7 @@ for (let i = 0; i < chartCanvases.length; i++)
 
             config.setConfig();
 
+            // noinspection JSUnresolvedFunction
             new Chart(chartCanvas, config.config);
 
         }

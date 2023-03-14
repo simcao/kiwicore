@@ -14,6 +14,11 @@
 
 namespace App\Service;
 
+/**
+ * Parse data for ChartJs
+ *
+ * @author Simcao EI
+ */
 class ChartDataParser
 {
     /**
@@ -25,11 +30,6 @@ class ChartDataParser
      * @var array
      */
     private array $datasets;
-
-    /**
-     * @var array
-     */
-    private array $parsedData;
 
     /**
      * @param array $labels
@@ -62,11 +62,9 @@ class ChartDataParser
      */
     public function getParsedData(): array
     {
-        $this->parsedData = [
+        return [
             'labels' => $this->labels,
             'datasets' => $this->datasets
         ];
-
-        return $this->parsedData;
     }
 }

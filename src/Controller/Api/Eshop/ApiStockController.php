@@ -22,8 +22,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Get stock information
+ *
+ * @author Simcao EI
+ */
 class ApiStockController extends AbstractController
 {
+    /**
+     * Return JSON Response to draw charts of stocks
+     *
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/api/eshop/stocks/transactions/{id}', name: 'kiwicore_api_eshop_stocks_transactions')]
     public function listStockTransactions(ManagerRegistry $doctrine, int $id): Response
     {

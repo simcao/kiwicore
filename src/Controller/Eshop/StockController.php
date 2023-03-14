@@ -25,14 +25,20 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Manage stock related pages.
  *
- * @author Simcao
+ * @author Simcao EI
  */
 class StockController extends AbstractController
 {
+    /**
+     * Return page with all stocks result
+     *
+     * @param ManagerRegistry $doctrine
+     * @param int $currentPage
+     * @return Response
+     */
     #[Route('/admin/stocks/{currentPage}', name: 'kiwicore_stock')]
     public function listStock(ManagerRegistry $doctrine, int $currentPage = 1): Response
     {
-
         $products = $doctrine->getRepository(Product::class)->findAllByStockPaginated($currentPage);
 
         return $this->render('modules/eshop/stocks/index.html.twig', [
@@ -42,6 +48,14 @@ class StockController extends AbstractController
         ]);
     }
 
+    /**
+     * Return page with form to update products stock.
+     *
+     * @param ManagerRegistry $doctrine
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/stocks/modifier-stock/{id}', name: 'kiwicore_stock_edit')]
     public function editStock(ManagerRegistry $doctrine, Request $request, int $id): Response
     {
@@ -86,10 +100,16 @@ class StockController extends AbstractController
         ]);
     }
 
+    /**
+     * Return page with details of products stock. Redirect to stock list if not found.
+     *
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/stocks/produits/{id}', name: 'kiwicore_stock_show')]
-    public function showStock(ManagerRegistry $doctrine, Request $request, int $id): Response
+    public function showStock(ManagerRegistry $doctrine, int $id): Response
     {
-
         $product = $doctrine->getRepository(Product::class)->find($id);
 
         if (!$product)

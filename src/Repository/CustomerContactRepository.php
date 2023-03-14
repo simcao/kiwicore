@@ -1,4 +1,19 @@
 <?php
+/*
+ *
+ * This file is part of the Kiwicore package.
+ *
+ * (c) Simcao EI <dev@simcao.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ *  2023
+ */
+
+/** @noinspection PhpUndefinedFieldInspection */
+/** @noinspection PhpUnused */
+/** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace App\Repository;
 
@@ -13,14 +28,28 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method CustomerContact|null findOneBy(array $criteria, array $orderBy = null)
  * @method CustomerContact[]    findAll()
  * @method CustomerContact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Simcao EI
  */
 class CustomerContactRepository extends ServiceEntityRepository
 {
+    /**
+     * Constructor.
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CustomerContact::class);
     }
 
+    /**
+     * Save a customer contact.
+     *
+     * @param CustomerContact $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(CustomerContact $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +59,13 @@ class CustomerContactRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Remove a customer contact.
+     *
+     * @param CustomerContact $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(CustomerContact $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -38,29 +74,4 @@ class CustomerContactRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return CustomerContact[] Returns an array of CustomerContact objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?CustomerContact
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

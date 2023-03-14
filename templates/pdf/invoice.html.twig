@@ -1,0 +1,193 @@
+<html lang="fr">
+    <head>
+        <title>Facture</title>
+        <meta charset="UTF-8">
+        <style>
+            .invoice {
+                padding: 0;
+                margin: 0;
+                font-family: sans-serif;
+            }
+            .invoice .invoice-header {
+                width: 100%;
+            }
+
+            .invoice .invoice-header .invoice-logo {
+                float: left;
+            }
+            .invoice .invoice-header .invoice-title {
+                float: right;
+            }
+            .invoice-header .invoice-logo > img {
+                max-height: 100px;
+            }
+            .invoice .invoice-addresses {
+                clear: both;
+            }
+            .invoice .invoice-addresses li, .invoice .invoice-addresses ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                line-height: 20px;
+            }
+            .invoice .invoice-addresses .company-name{
+                font-weight: bold;
+            }
+            .invoice .invoice-addresses .address{
+                margin-top: 20px;
+            }
+            .invoice .invoice-addresses .invoice-sender {
+                padding-top: 50px;
+            }
+            .invoice .invoice-addresses .invoice-sender:after {
+                content: '';
+                width: 100%;
+                display: block;
+                border-bottom: 1px solid #4C4C4C;
+                margin-top: 30px;
+            }
+            .invoice .invoice-content {
+                margin-top: 50px;
+            }
+            .invoice .invoice-content table {
+                width: 100%;
+                border: none;
+                border-spacing: 0;
+                border-collapse: unset;
+            }
+            .invoice .invoice-content thead {
+                background-color: #F7717D;
+            }
+            .invoice .invoice-content th {
+                color: white;
+                font-size: 14px;
+                text-align: left;
+                line-height: 20px;
+                padding: 5px;
+            }
+            .invoice .invoice-content tr:nth-child(even) {
+                background: #ebebeb;
+            }
+            .invoice .invoice-content tfoot tr:last-child {
+                background-color: #cccccc;
+                font-weight: bold;
+            }
+            .invoice .invoice-content td {
+                font-size: 11px;
+                text-align: left;
+                line-height: 20px;
+                padding: 5px;
+            }
+            .invoice .invoice-content:after {
+                content: '';
+                width: 100%;
+                display: block;
+                border-bottom: 1px solid #4C4C4C;
+                margin-top: 30px;
+            }
+            .invoice-payment {
+                margin-top: 30px;
+            }
+            .invoice .invoice-payment li,
+            .invoice .invoice-payment ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                line-height: 20px;
+                font-size: 12px;
+            }
+            .invoice .invoice-payment .invoice-due-date {
+                float: left;
+                width: 50%;
+            }
+            .invoice .invoice-payment .invoice-bank-account {
+                float: right;
+                width: 50%;
+            }
+            .invoice .invoice-terms {
+                padding-top: 80px;
+                clear: both;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="invoice">
+            <div class="invoice-header">
+                <div class="invoice-logo">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi0.wp.com%2Fiacoa.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fsample-company-logo.jpg%3Fssl%3D1&f=1&nofb=1&ipt=ae96ff3a090c85ac64fc229ec59be46c405fab700ab7494b1450e1fce076562b&ipo=images" alt="logo">
+                </div>
+                <div class="invoice-title">
+                    <h1>Facture #{{ invoice.id }}</h1>
+                    <span class="invoice-date">{{ invoice.dateBilling|date('d/m/Y') }}</span>
+                </div>
+            </div>
+            <div class="invoice-addresses">
+                <div class="invoice-sender">
+                    <ul>
+                        <li class="company-name">{{ settings.companyName }}</li>
+                        <li class="address">{{ settings.companyAddress }}</li>
+                        <li>{{ settings.companyZipcode ~ ', ' ~ settings.companyCity }}</li>
+                        <li>maxime.opin@simcao.com</li>
+                        <li>SIREN : 123456789</li>
+                    </ul>
+                </div>
+                <div class="invoice-customer">
+                    <p>A l'attention de,</p>
+                    <ul>
+                        <li>{{ invoice.customer.name }}</li>
+                        <li>{{ invoice.customer.address }}</li>
+                        <li>{{ invoice.customer.zipcode ~ ', ' ~ invoice.customer.city }}</li>
+                        <li>{{ invoice.customer.email }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="invoice-content">
+                <table>
+                    <thead>
+                        <th>Produits</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        {% for item in invoice.items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price / 100 }}</td>
+                                <td>{{ item.quantity * item.price / 100 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total</td>
+                            <td>{{ invoice.total / 100 }} EUR</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="invoice-payment">
+                <div class="invoice-due-date">
+                    <ul>
+                        <li>Echéance</li>
+                        <li>{{ invoice.dateDue|date('d/m/Y') }}</li>
+                    </ul>
+                </div>
+                <div class="invoice-bank-account">
+                    <ul>
+                        <li>Détails bancaires</li>
+                        <li>BIC : BOUSFRPPXXX</li>
+                        <li>IBAN : FR76 4040 4040 4040 4040 4040 443</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="invoice-terms">
+                <p><strong>Conditions</strong></p>
+                <p>Paiement à réception</p>
+                <p>En cas de retard de paiement, application d'une indemnité forfaitaire pour frais de recouvrement de 40 EUR selon article D441-5 du Code de commerce.</p>
+            </div>
+        </div>
+    </body>
+</html>

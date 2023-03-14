@@ -1,0 +1,84 @@
+{% extends 'kiwicore.base.html.twig' %}
+
+{% block title %}Factures - Administration{% endblock %}
+
+{% block breadcrumbs %}
+    <li>Accueil</li>
+    <li>Gestion des factures</li>
+    <li>Détails de la facture</li>
+{% endblock %}
+
+{% block page_title %}
+    <h1>Détails de la facture {{ invoice.id }}</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-2">
+            <div class="card">
+                <div class="card-title">
+                    Expéditeur
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>{{ settings.companyName }}</li>
+                        <li>{{ settings.companyAddress }}</li>
+                        <li>{{ settings.companyZipcode ~ ', ' ~ settings.companyCity }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">
+                    Destinataire (client)
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>{{ invoice.customer.name }}</li>
+                        <li>{{ invoice.customer.address }}</li>
+                        <li>{{ invoice.customer.zipcode ~ ', ' ~ invoice.customer.city }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="card">
+                <div class="card-title">
+                    Détails
+                </div>
+                <div class="card-body">
+                    <div class="full-width text-right">
+                        <a href="{{ path('kiwicore_invoice_add_item', {id: invoice.id}) }}" class="btn btn-small btn-primary">Ajouter une ligne</a>
+                        <a href="{{ path('kiwicore_invoice_download', {id: invoice.id}) }}" class="btn btn-small btn-primary">Télécharger</a>
+                    </div>
+                    <table class="basic-table">
+                        <thead>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Total</th>
+                        </thead>
+                        {% if invoice.items|length > 0 %}
+                            {% for item in invoice.items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.price / 100 }} EUR</td>
+                                    <td>{{ item.quantity * item.price / 100 }} EUR</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Total</td>
+                                <td>{{ invoice.total / 100 }} EUR</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                        {% if invoice.items|length == 0 %}
+                            <p>Aucune ligne enregistrée pour cette facture.</p>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
